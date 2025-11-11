@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estructura de Datos | ESPOCH</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #8A4FFF;
+            --secondary: #FF6B9D;
+            --accent: #5BC0EB;
+            --light: #F7F9FC;
+            --dark: #2D3047;
+            --text: #4A4A68;
+            --success: #4CD97B;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+            color: var(--text);
+            line-height: 1.6;
+        }
+        
+        header {
+            background: linear-gradient(120deg, var(--primary), var(--accent));
+            color: white;
+            padding: 1.5rem 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .logo i {
+            font-size: 2rem;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px;
+            border-radius: 10px;
+        }
+        
+        .logo h1 {
+            font-size: 1.6rem;
+            font-weight: 600;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        nav ul li a:hover {
+            background-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+        
+        .hero {
+            padding: 4rem 0;
+            text-align: center;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="white" opacity="0.1"/><path d="M0,0 L100,100 M100,0 L0,100" stroke="white" stroke-width="0.5" opacity="0.1"/></svg>'), 
+                        linear-gradient(120deg, var(--primary), var(--accent));
+            color: white;
+            border-radius: 0 0 30px 30px;
+            margin-bottom: 3rem;
+        }
+        
+        .hero h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            opacity: 0.9;
+        }
+        
+        .course-info {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .info-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 1rem 1.5rem;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 200px;
+        }
+        
+        .units-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+        
+        .unit-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            transition: all 0.4s ease;
+            position: relative;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .unit-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+        
+        .unit-header {
+            background: linear-gradient(120deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1.8rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .unit-header::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            transform: rotate(30deg);
+        }
+        
+        .unit-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            font-weight: bold;
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+        }
+        
+        .unit-header h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        
+        .unit-content {
+            padding: 1.8rem;
+        }
+        
+        .learning-outcome {
+            background: rgba(139, 111, 255, 0.1);
+            border-left: 4px solid var(--primary);
+            padding: 1.2rem;
+            margin-bottom: 1.5rem;
+            border-radius: 0 10px 10px 0;
+        }
+        
+        .learning-outcome i {
+            color: var(--primary);
+            margin-right: 8px;
+        }
+        
+        .unit-content h4 {
+            color: var(--primary);
+            margin: 1.5rem 0 0.8rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #eee;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .unit-content ul {
+            list-style-type: none;
+            margin-left: 0.5rem;
+        }
+        
+        .unit-content li {
+            margin-bottom: 0.7rem;
+            position: relative;
+            padding-left: 1.8rem;
+        }
+        
+        .unit-content li:before {
+            content: "•";
+            color: var(--secondary);
+            font-weight: bold;
+            font-size: 1.5rem;
+            position: absolute;
+            left: 0;
+            top: -5px;
+        }
+        
+        .methods-container {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+        
+        .method-tag {
+            background: rgba(91, 192, 235, 0.15);
+            color: var(--accent);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 3rem 0 2rem;
+            border-radius: 30px 30px 0 0;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-section h3 {
+            margin-bottom: 1.2rem;
+            font-weight: 600;
+            color: var(--accent);
+        }
+        
+        .footer-section p {
+            margin-bottom: 0.8rem;
+            opacity: 0.8;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            opacity: 0.7;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+            
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .hero h2 {
+                font-size: 2rem;
+            }
+            
+            .units-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .course-info {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+        
+        .floating-btn {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(120deg, var(--primary), var(--secondary));
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            z-index: 100;
+            transition: all 0.3s ease;
+        }
+        
+        .floating-btn:hover {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-laptop-code"></i>
+                    <h1>Estructura de Datos</h1>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="#unidad1"><i class="fas fa-star"></i> Unidad 1</a></li>
+                        <li><a href="#unidad2"><i class="fas fa-layer-group"></i> Unidad 2</a></li>
+                        <li><a href="#unidad3"><i class="fas fa-project-diagram"></i> Unidad 3</a></li>
+                        <li><a href="#unidad4"><i class="fas fa-search"></i> Unidad 4</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h2>Estructura de Datos - ESPOCH</h2>
+            <p>Domina las estructuras fundamentales de datos y algoritmos para desarrollar soluciones eficientes en el ámbito de la tecnología de la información.</p>
+            
+            <div class="course-info">
+                <div class="info-card">
+                    <i class="far fa-calendar-alt"></i>
+                    <div>
+                        <h4>Período</h4>
+                        <p>Sep 2025 - Feb 2026</p>
+                    </div>
+                </div>
+                <div class="info-card">
+                    <i class="far fa-clock"></i>
+                    <div>
+                        <h4>Horas</h4>
+                        <p>96 horas / 2 créditos</p>
+                    </div>
+                </div>
+                <div class="info-card">
+                    <i class="fas fa-user-graduate"></i>
+                    <div>
+                        <h4>Modalidad</h4>
+                        <p>Presencial</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <main class="container">
+        <div class="units-container">
+            <!-- Unidad 1 -->
+            <div class="unit-card" id="unidad1">
+                <div class="unit-header">
+                    <div class="unit-number">1</div>
+                    <h3>Fundamentos e Introducción</h3>
+                    <p>Bases conceptuales de estructuras de datos</p>
+                </div>
+                <div class="unit-content">
+                    <div class="learning-outcome">
+                        <i class="fas fa-bullseye"></i>
+                        <strong>Resultado de aprendizaje:</strong> Identifica las características y fundamentos de las estructuras de datos mediante el análisis de bibliografía especializada y casos prácticos.
+                    </div>
+                    
+                    <h4><i class="fas fa-book-open"></i> Temas principales</h4>
+                    <ul>
+                        <li>Introducción: Historia, Características, Ventajas y Desventajas</li>
+                        <li>Tipos de Datos: Primitivos, Compuestos, Agregados y Abstractos</li>
+                        <li>Datos compuestos: Vectores, Matrices, Registros</li>
+                        <li>Fundamentos de Algoritmia: Concepto y Representación de algoritmos</li>
+                    </ul>
+                    
+                    <h4><i class="fas fa-chalkboard-teacher"></i> Métodos didácticos</h4>
+                    <div class="methods-container">
+                        <div class="method-tag">
+                            <i class="fas fa-puzzle-piece"></i> Aprendizaje Basado en Problemas
+                        </div>
+                    </div>
+                    
+                    <h4><i class="fas fa-tasks"></i> Estrategias didácticas</h4>
+                    <div class="methods-container">
+                        <div class="method-tag">
+                            <i class="fas fa-user-graduate"></i> Aprendizaje basado en Competencias
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Unidad 2 -->
+            <div class="unit-card" id="unidad2">
+                <div class="unit-header">
+                    <div class="unit-number">2</div>
+                    <h3>Estructuras Lineales</h3>
+                    <p>Listas, pilas y colas</p>
+                </div>
+                <div class="unit-content">
+                    <div class="learning-outcome">
+                        <i class="fas fa-bullseye"></i>
+                        <strong>Resultado de aprendizaje:</strong> Analiza y aplica estructuras de datos lineales (listas, pilas y colas) para resolver problemas computacionales.
+                    </div>
+                    
+                    <h4><i class="fas fa-book-open"></i> Temas principales</h4>
+                    <ul>
+                        <li>Pila (Stack): Definición, Representación Gráfica, Operaciones y Aplicaciones</li>
+                        <li>Cola (Queue): Definición, Tipos, Representación Gráfica, Operaciones y Aplicaciones</li>
+                        <li>Lista (List): Nodo, Definición, Tipos, Representación Gráfica, Operaciones y Aplicaciones</li>
+                    </ul>
+                    
+                    <h4><i class="fas fa-chalkboard-teacher"></i> Métodos didácticos</h4>
+                    <div class="methods-container">
+                        <div class="method-tag">
+                            <i class="fas fa-puzzle-piece"></i> Aprendizaje Basado en Problemas
+                        </div>
+                    </div>
+                    
+                    <h4><i class="fas fa-tasks"></i> Estrategias didácticas</h4>
+                    <div class="methods-container">
+                        <div class="method-tag">
+                            <i class="fas fa-user-graduate"></i> Aprendizaje basado en Competencias
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Unidad 3 -->
+            <div class="unit-card" id="unidad3">
+                <div class="unit-header">
+                    <div class="unit-number">3</div>
+                    <h3>Estructuras No Lineales</h3>
+                    <p>Árboles y grafos</p>
+                </div>
+                <div class="unit-content">
+                    <div class="learning-outcome">
+                        <i class="fas fa-bullseye"></i>
+                        <strong>Resultado de aprendizaje:</strong> Analiza y aplica estructuras de datos no lineales (árboles y grafos) para solucionar problemas computacionales.
+                    </div>
+                    
+                    <h4><i class="fas fa-book-open"></i> Temas principales</h4>
+                    <ul>
+                        <li>Visualización de algoritmos: Uso de técnicas y herramientas</li>
+                        <li>Árboles: Definición, Representación, Recorrido y Métodos</li>
+                        <li>Grafos: Definición, Tipos y Propiedades</li>
+                    </ul>
+                    
+                    <h4><i class="fas fa-chalkboard-teacher"></i> Métodos didácticos</h4>
+                    <div class="methods-container">
+                        <div class="method-tag">
+                            <i class="fas fa-puzzle-piece"></i> Aprendizaje Basado en Problemas
+                        </div>
+                    </div>
+                    
+                    <h4><i class="fas fa-tasks"></i> Estrategias didácticas</h4>
+                    <div class="methods-container">
+                        <div class="method-tag">
+                            <i class="fas fa-user-graduate"></i> Aprendizaje basado en Competencias
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Unidad 4 -->
+            <div class="unit-card" id="unidad4">
+                <div class="unit-header">
+                    <div class="unit-number">4</div>
+                    <h3>Búsqueda y Ordenamiento</h3>
+                    <p>Algoritmos fundamentales</p>
+                </div>
+                <div class="unit-content">
+                    <div class="learning-outcome">
+                        <i class="fas fa-bullseye"></i>
+                        <strong>Resultado de aprendizaje:</strong> Conoce y aplica los métodos comunes de ordenamiento y búsqueda para cada estructura de datos estudiada.
+                    </div>
+                    
+                    <h4><i class="fas fa-book-open"></i> Temas principales</h4>
+                    <ul>
+                        <li>Análisis de algoritmos: Complejidad temporal y espacial (Big O)</li>
+                        <li>Ordenamiento: Burbuja, Quicksort, Mergesort</li>
+                        <li>Búsqueda: Secuencial, Binaria, Hash</li>
+                        <li>Aplicaciones en programación competitiva</li>
+                    </ul>
+                    
+                    <h4><i class="fas fa-chalkboard-teacher"></i> Métodos didácticos</h4>
+                    <div class="methods-container">
+                        <div class="method-tag">
+                            <i class="fas fa-puzzle-piece"></i> Aprendizaje Basado en Problemas
+                        </div>
+                        <div class="method-tag">
+                            <i class="fas fa-project-diagram"></i> Aprendizaje Basado en Proyectos
+                        </div>
+                    </div>
+                    
+                    <h4><i class="fas fa-tasks"></i> Estrategias didácticas</h4>
+                    <div class="methods-container">
+                        <div class="method-tag">
+                            <i class="fas fa-user-graduate"></i> Aprendizaje basado en Competencias
+                        </div>
+                        <div class="method-tag">
+                            <i class="fas fa-brain"></i> Aprendizaje basado en el Pensamiento
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Información del Curso</h3>
+                    <p><i class="far fa-calendar-alt"></i> Período: 15 Sep 2025 - 13 Feb 2026</p>
+                    <p><i class="far fa-clock"></i> Horas: 96 / Créditos: 2</p>
+                    <p><i class="fas fa-user-graduate"></i> Modalidad: Presencial</p>
+                    <p><i class="fas fa-university"></i> Carrera: Tecnologías de la Información</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Contacto</h3>
+                    <p><i class="fas fa-user-tie"></i> Profesor: Pedro Stalyn Aguilar</p>
+                    <p><i class="fas fa-envelope"></i> Email: pedro.aguilar@espoch.edu.ec</p>
+                    <p><i class="fas fa-phone"></i> Teléfono: 0988574343</p>
+                    
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Recursos</h3>
+                    <p><i class="fas fa-book"></i> Bibliografía Básica y Complementaria</p>
+                    <p><i class="fas fa-laptop-code"></i> Plataformas Virtuales</p>
+                    <p><i class="fas fa-video"></i> Material Multimedia</p>
+                    <p><i class="fas fa-tasks"></i> Sistema de Evaluación</p>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>ESPOCH - Carrera de Tecnologías de la Información &copy; 2025</p>
+            </div>
+        </div>
+    </footer>
+
+    <div class="floating-btn" onclick="scrollToTop()">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <script>
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+        
+        // Efecto de aparición suave para las tarjetas
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.unit-card');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            cards.forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                observer.observe(card);
+            });
+        });
+    </script>
+</body>
+</html>
